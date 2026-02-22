@@ -15,10 +15,7 @@ const useRecorder = () => {
   const recordingId = useRef<string | null>(null);
 
   useEffect(() => {
-    let initialRunTimeout: number;
-    if (online) {
-      initialRunTimeout = setTimeout(() => startUpload(), 1000);
-    }
+    const initialRunTimeout = setTimeout(() => startUpload(), 1000);
     return () => {
       clearTimeout(initialRunTimeout);
     };
@@ -31,7 +28,7 @@ const useRecorder = () => {
       const rec = new MediaRecorder(strm);
       mr.current = rec;
 
-      const newRecordingId = self.crypto.randomUUID();
+      const newRecordingId = crypto.randomUUID();
       recordingId.current = newRecordingId;
       idx.current = 0;
 

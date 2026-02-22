@@ -1,75 +1,144 @@
-# React + TypeScript + Vite
+# 🎙️ Audio Recorder — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean, browser-based audio recording application built with React. Record audio directly from your microphone, play it back, and manage your recordings — all from a modern, responsive UI.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## ✨ Features
 
-## React Compiler
+- 🎤 **One-click recording** — Start and stop audio capture using your browser's microphone
+- ▶️ **Instant playback** — Listen to recordings right after capturing them
+- 📁 **Recording management** — View, replay, and delete saved recordings
+- 📡 **Backend integration** — Uploads recordings to a REST API for storage or processing
+- 📱 **Responsive design** — Works seamlessly on desktop and mobile browsers
 
-The React Compiler is enabled on this template. See [this documentation](https://react.dev/learn/react-compiler) for more information.
+---
 
-Note: This will impact Vite dev & build performances.
+## 🛠️ Tech Stack
 
-## Expanding the ESLint configuration
+| Layer       | Technology                  |
+| ----------- | --------------------------- |
+| Framework   | React                       |
+| Language    | TypeScript                  |
+| Audio API   | MediaRecorder API (Web API) |
+| HTTP Client | Fetch / Axios               |
+| Styling     | CSS / Tailwind CSS          |
+| Build Tool  | Vite                        |
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+## 📁 Project Structure
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+frontend/
+├── index.html             # HTML entry point with root mount
+├── src/
+│   ├── main.tsx           # React root initialization
+│   ├── App.tsx            # Top-level component
+│   ├── index.css          # Global styles and Tailwind imports
+│   ├── components/        # React components
+│   │   ├── Recorder.tsx   # Main recording interface
+│   │   ├── RecordingTimer.tsx  # Timer display
+│   │   ├── OnlineFlag.tsx # Network status indicator
+│   │   └── ui/            # shadcn/ui components
+│   ├── hooks/             # Custom React hooks
+│   │   ├── useRecorder.ts
+│   │   ├── useUploadSync.ts
+│   │   └── useOnlineStatus.ts
+│   ├── lib/               # Shared utilities
+│   │   ├── db.ts          # Dexie database configuration
+│   │   └── utils.ts       # Utility functions
+│   └── workers/           # Web Workers
+│       └── uploadWorker.ts
+├── package.json           # Dependencies and scripts
+├── tsconfig.json          # TypeScript configuration
+├── vite.config.ts         # Vite bundler configuration
+└── eslint.config.js       # ESLint rules
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+---
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## 🚀 Getting Started
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) v16 or higher
+- npm or yarn
+- A running instance of the [backend server](../backend/) _(if applicable)_
+
+### Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/LShaViR/audio-recorder.git
+
+# Navigate to the frontend directory
+cd audio-recorder/frontend
+
+# Install dependencies
+npm install
 ```
+
+### Running Locally
+
+```bash
+npm run dev
+```
+
+The app will be available at `http://localhost:5173` (Vite).
+
+### Building for Production
+
+```bash
+npm run build
+```
+
+Output will be in the `dist/` (Vite) or `build/` (CRA) folder.
+
+---
+
+## ⚙️ Configuration
+
+If the frontend needs to communicate with a backend, create a `.env` file in the `frontend/` directory:
+
+```env
+VITE_API_BASE_URL=http://localhost:8000
+```
+
+> Replace the URL with your actual backend address.
+
+---
+
+## 🎯 How It Works
+
+1. The user clicks **Record** — the browser requests microphone permission via `getUserMedia`.
+2. Audio is captured using the **MediaRecorder API** and stored as binary chunks.
+3. On stopping, chunks are assembled into a `Blob` (`.webm` or `.wav` format).
+4. The recording is available for **immediate playback** via an `<audio>` element.
+5. Optionally, the audio `Blob` is sent to the backend API as `multipart/form-data`.
+
+---
+
+## 🌐 Browser Support
+
+| Browser | Supported                                  |
+| ------- | ------------------------------------------ |
+| Chrome  | ✅                                         |
+| Firefox | ✅                                         |
+| Edge    | ✅                                         |
+| Safari  | ⚠️ Partial (limited MediaRecorder support) |
+
+> **Note:** Microphone access requires HTTPS in production environments.
+
+---
+
+## 📄 License
+
+This project is open source and available under the [MIT License](../LICENSE).
+
+---
+
+## 👤 Author
+
+**LShaViR**  
+GitHub: [@LShaViR](https://github.com/LShaViR)

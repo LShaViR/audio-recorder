@@ -1,4 +1,4 @@
-import type { SyncStatus } from "@/lib/uploadWorker";
+import type { SyncStatus } from "@/worker/uploadWorker";
 import { useEffect, useCallback, useRef } from "react";
 import useOnlineStatus from "./useOnlineStatus";
 
@@ -8,7 +8,7 @@ export function useUploadSync() {
 
   useEffect(() => {
     const worker = new Worker(
-      new URL("../lib/uploadWorker.ts", import.meta.url),
+      new URL("../worker/uploadWorker.ts", import.meta.url),
       {
         type: "module",
       },
