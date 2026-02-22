@@ -4,11 +4,11 @@
 
 ### Installation
 
-Clone the repository and navigate to the frontend directory:
+Clone the repository and navigate to the server directory:
 
 ```
 git clone https://github.com/LShaViR/audio-recorder
-cd audio-recorder/frontend
+cd audio-recorder/server
 ```
 
 Install all dependencies using Bun:
