@@ -20,7 +20,7 @@ bun install
 ### Running Locally
 
 ```bash
-bun run dev
+VITE_BACKEND_URL="http://localhost:8080" bun run dev  
 ```
 
 The app will be available at `http://localhost:5173` (Vite) .
