@@ -20,7 +20,7 @@ bun install
 ### Running Locally
 
 ```bash
-bun run dev  
+VITE_BACKEND_URL="http://localhost:8080" bun run dev  
 ```
 
 Navigate to the server directory:
