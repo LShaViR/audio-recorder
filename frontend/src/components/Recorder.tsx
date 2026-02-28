@@ -4,7 +4,7 @@ import RecordingTimer from "./RecordingTimer";
 import OnlineFlag from "./OnlineFlag";
 
 export default function Recorder() {
-  const { recording, start, stop, startUpload, stopUpload } = useRecorder();
+  const { recording, start, stop, startUpload } = useRecorder();
 
   console.log({ recording, start, stop, startUpload });
   return (
@@ -39,13 +39,6 @@ export default function Recorder() {
           variant="outline"
         >
           Start sync
-        </Button>
-        <Button
-          className="cursor-pointer"
-          onClick={() => stopUpload()}
-          variant="outline"
-        >
-          Stop sync
         </Button>
       </div>
     </div>
