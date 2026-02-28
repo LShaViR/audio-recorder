@@ -1,25 +1,15 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useUploadSync } from "./useUploadSync";
-import { useRecording } from "@/store/recording";
 import { dbPut } from "@/lib/db";
-import useOnlineStatus from "./useOnlineStatus";
 
 const useRecorder = () => {
-  const { startUpload } = useUploadSync();
-  const { recording, setRecording } = useRecording((state) => state);
-  const online = useOnlineStatus();
+  const { startUpload, stopUpload } = useUploadSync();
+  const [recording, setRecording] = useState(false);
 
   const mr = useRef<MediaRecorder | null>(null);
   const stream = useRef<MediaStream | null>(null);
   const idx = useRef<number>(0);
   const recordingId = useRef<string | null>(null);
-
-  useEffect(() => {
-    const initialRunTimeout = setTimeout(() => startUpload(), 1000);
-    return () => {
-      clearTimeout(initialRunTimeout);
-    };
-  }, [online]);
 
   const start = async () => {
     try {
@@ -41,18 +31,19 @@ const useRecorder = () => {
             timestamp: Date.now(),
             status: "pending",
           });
-          startUpload(recordingId.current);
         }
       };
 
       rec.start(2000);
       setRecording(true);
+      startUpload(recordingId.current);
     } catch (e: any) {
       console.error(e);
     }
   };
 
   const stop = () => {
+    stopUpload();
     mr.current?.stop();
     stream.current?.getTracks().forEach((t) => t.stop());
     recordingId.current = null;
@@ -64,6 +55,7 @@ const useRecorder = () => {
     stop,
     recording,
     startUpload,
+    stopUpload,
   };
 };
 

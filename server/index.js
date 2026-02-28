@@ -4,7 +4,7 @@ const app = express();
 const port = 8080;
 const multer = require("multer");
 
-const data = [];
+let data = [];
 
 let print = 1;
 const upload = multer();
@@ -32,7 +32,8 @@ setInterval(() => {
     log,
     "\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
   );
-}, 3_000);
+  data = [];
+}, 10_000);
 
 // The "Catch-all" route
 app.post("/post", upload.single("audioBlob"), async (req, res) => {

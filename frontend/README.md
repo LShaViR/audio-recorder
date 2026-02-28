@@ -132,12 +132,6 @@ VITE_API_BASE_URL=http://localhost:8000
 
 ---
 
-## 📄 License
-
-This project is open source and available under the [MIT License](../LICENSE).
-
----
-
 ## 👤 Author
 
 **LShaViR**  
