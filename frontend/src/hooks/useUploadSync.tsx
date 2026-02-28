@@ -34,6 +34,13 @@ export function useUploadSync() {
     };
   }, []);
 
+  useEffect(() => {
+    const onOnlineSync = setTimeout(() => startUpload(), 1000);
+    () => {
+      clearTimeout(onOnlineSync);
+    };
+  }, [online]);
+
   const startUpload = useCallback(
     (recordingId?: string | null) => {
       if (!workerRef.current) return;
